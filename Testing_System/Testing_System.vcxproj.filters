@@ -13,10 +13,39 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Исходные файлы\h_files">
+      <UniqueIdentifier>{562d42bb-58d6-44ee-a90f-eba2ca927aae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\cpp_files">
+      <UniqueIdentifier>{f7e8421c-d8a0-4bf2-a544-53eb18a003c0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="student_mode.cpp">
+      <Filter>Исходные файлы\cpp_files</Filter>
+    </ClCompile>
+    <ClCompile Include="file_management_module.cpp">
+      <Filter>Исходные файлы\cpp_files</Filter>
+    </ClCompile>
+    <ClCompile Include="teacher_mode.cpp">
+      <Filter>Исходные файлы\cpp_files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="student_mode.h">
+      <Filter>Исходные файлы\h_files</Filter>
+    </ClInclude>
+    <ClInclude Include="teacher_mode.h">
+      <Filter>Исходные файлы\h_files</Filter>
+    </ClInclude>
+    <ClInclude Include="file_management_module.h">
+      <Filter>Исходные файлы\h_files</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries.h">
+      <Filter>Исходные файлы\h_files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
