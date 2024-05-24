@@ -3,7 +3,7 @@
 int print_and_input();
 void training(int n);
 int testing(int n);
-void control_testing();
+int control_testing();
 void copy_file();
 void recordingAddData(string login, int est, int n);
 void avg_data_recording(string login, int est);

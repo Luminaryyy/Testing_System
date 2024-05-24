@@ -20,7 +20,7 @@ int main()
 	string login, password;
 
 	cout << "\t/-----------------------/" << endl;
-	cout << "\t|введите логин:\t|\n";
+	cout << "\t|введите логин:\t\t|\n";
 	cout << "\t/-----------------------/" << endl;
 
 	cin >> login;
@@ -76,7 +76,7 @@ int main()
 
 		else
 		{
-			cout << "Добро пожаловать, " << surname << " " << name << "!" << endl;
+			cout << endl << "Добро пожаловать, " << surname << " " << name << "!" << endl;
 			MODE_MAIN(login);
 		}
 	}
@@ -84,5 +84,3 @@ int main()
 	student_file.close();
 	return 0;
 }
-// Логин: anto
-// Пароль: 7628

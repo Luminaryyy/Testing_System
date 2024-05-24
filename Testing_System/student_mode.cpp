@@ -1,6 +1,5 @@
 #include "student_mode.h"
 
-
 int print_and_input()
 {
     cout << endl << "Выберите тему из списка:" << endl;
@@ -158,7 +157,7 @@ int testing(int n)
                 num_questions.push_back(k - 1);
                 mistake++;
             }
-            else cout << endl;
+            cout << endl;
         }
     }
     cout << "Вы прошли тест" << endl;
@@ -180,9 +179,115 @@ int testing(int n)
     else return 2;
 }
 
-void control_testing()
+int control_testing()
 {
+    srand(time(NULL));
 
+    ofstream final_test("questions_list/final_test.txt");
+    ofstream extra("questions_list/extra.txt");
+    ifstream file_question;
+    string line, quest1, quest2;
+
+    int* a = new int[8];
+    int size_a = 0, x;
+    bool generate = true;
+    
+    for (int i = 0; i < 8; i++)
+    {
+        while (generate)
+        {
+            x = 1 + rand() % 8;
+            generate = false;
+            for (int j = 0; j < size_a; j++)
+            {
+                if (x == a[j])
+                {
+                    generate = true;
+                    break;
+                }
+            }
+        }
+        a[size_a++] = x;
+        generate = true;
+
+        file_question = return_file(x);
+        int num_line_quest = 2 + 6 * (rand() % 8);
+        for (int n = 1; n < num_line_quest; n++) getline(file_question, line);
+        for (int n = 1; n <= 12; n++)
+        {
+            getline(file_question, line);
+            if (n <= 6)
+            {
+                quest1 = line + "\n";
+                final_test << quest1;
+            }
+
+            else
+            {
+                quest2 = line + "\n";
+                extra << quest2;
+            }
+        }
+        
+    }
+    delete[] a;
+
+    file_question.close();
+    extra.close();
+    
+    ifstream extra2("questions_list/extra.txt");
+    for (int i = 1; i <= 48; i++)
+    {
+        getline(extra2, line);
+        if (i != 48) final_test << line << endl;
+        else final_test << line;
+    }
+    extra2.close();
+    final_test.close();
+
+    ifstream final_test2("questions_list/final_test.txt");
+    string question;
+    cout << endl;
+    int k = 1;
+    int mistake = 0;
+    for (int i = 1; i <= 96; i++)
+    {
+        getline(final_test2, line);
+        if ((i % 6 != 1) && (i % 6 != 0)) cout << line << endl;
+        else if (i % 6 == 1)
+        {
+            cout << k++ << "." << line << endl;
+            question = line;
+        }
+        else
+        {
+            int num = -1;
+            string strng;
+            do
+            {
+                cin >> strng;
+                if (!((strng.length() == 1) && ((strng == "1") || (strng == "2") || (strng == "3") || (strng == "4"))))
+                    cout << "Ошибка ввода, попробуйте ещё раз: ";
+            } while (!((strng.length() == 1) && ((strng == "1") || (strng == "2") || (strng == "3") || (strng == "4"))));
+
+            num = stoi(strng);
+
+            if (num != stoi(line)) mistake++;
+            cout << endl;
+        }
+    }
+    final_test2.close();
+
+    cout << "Вы прошли итоговый тест" << endl;
+
+    if (mistake != 0) cout << "Количество ошибок: " << mistake << endl;
+    else cout << "Вы не допустили ни одной ошибки" << endl;
+
+    int val = 16 - mistake;
+    if (val >= 14 && val <= 16) return 5;
+    if (val >= 11 && val <= 13) return 4;
+    if (val >= 8 && val <= 10) return 3;
+    else return 2;
 }
 
 void copy_file()
@@ -282,7 +387,6 @@ void avg_data_recording(string login, int est)
                     {
                         line = line.substr(0, 14);
                         avg = round (avg / k * 10) / 10;
-                        cout << avg;
                         student_file_copy << line << to_string(avg).substr(0, 3) << endl;
                     }
                 }
@@ -298,42 +402,52 @@ void avg_data_recording(string login, int est)
 
 void MODE_MAIN(string login)
 {
-    cout << "1 - Тренинг по теме" << endl;
-    cout << "2 - Тестирование по теме" << endl;
-    cout << "3 - Итоговый тест" << endl;
-    cout << "0 - Для выхода" << endl;
-
-    string str;
+    int n;
     do
     {
-        cin >> str;
-        if (!((str.length() == 1) && ((str == "1") || (str == "2") || (str == "3") || (str == "0"))))
-            cout << "Ошибка ввода, попробуйте ещё раз: ";
-    } while (!((str.length() == 1) && ((str == "1") || (str == "2") || (str == "3") || (str == "0"))));
+        cout << endl;
+        cout << "1 - Тренинг по теме" << endl;
+        cout << "2 - Тестирование по теме" << endl;
+        cout << "3 - Итоговый тест" << endl;
+        cout << "0 - Для выхода" << endl;
 
-    int n = stoi(str);
+        string str;
+        do
+        {
+            cin >> str;
+            if (!((str.length() == 1) && ((str == "1") || (str == "2") || (str == "3") || (str == "0"))))
+                cout << "Ошибка ввода, попробуйте ещё раз: ";
+        } while (!((str.length() == 1) && ((str == "1") || (str == "2") || (str == "3") || (str == "0"))));
 
-    switch (n)
-    {
-        case 0:
-            cout << "Вы вышли из режима студента";
-            break;
-        case 1:
+        n = stoi(str);
+       
+        switch (n)
         {
-            int num = print_and_input();
-            training(num);
-            break;
-        } 
-        case 2:
-        {
-            int num = print_and_input();
-            int est = testing(num);
-            recordingAddData(login, est, num);
-            avg_data_recording(login, est);
-            break;
+            case 0:
+                cout << "Вы вышли из режима студента";
+                break;
+            case 1:
+            {
+                int num = print_and_input();
+                training(num);
+                break;
+            } 
+            case 2:
+            {
+                int num = print_and_input();
+                int est = testing(num);
+                cout << "Ваша оценка: " << est;
+                recordingAddData(login, est, num);
+                avg_data_recording(login, est);
+                break;
+            }
+            case 3:
+                int est = control_testing();
+                cout << "Ваша оценка: " << est;
+                recordingAddData(login, est, 9);
+                avg_data_recording(login, est);
+                break;  
         }
-        case 3:
-            control_testing();
-            break;  
-    }
+        cout << endl;
+    } while (n != 0);
 }
