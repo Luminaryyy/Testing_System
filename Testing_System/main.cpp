@@ -41,7 +41,7 @@ int main()
 	{
 		string space = "-", line1 = "-", line2 = "-", name = "-", surname = "-";
 
-		for (int i = 1; i <= 364; i++)
+		for (int i = 1; i <= 374; i++)
 		{
 			if (i % 15 == 1)
 			{

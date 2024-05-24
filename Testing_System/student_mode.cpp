@@ -185,6 +185,23 @@ void control_testing()
 
 }
 
+void copy_file()
+{
+    string line;
+    ofstream student_file("students_information/students.txt");
+    ifstream student_file_copy("students_information/students_copy.txt");
+
+    for (int i = 1; i <= 374; i++)
+    {
+        getline(student_file_copy, line);
+        if (i != 374) student_file << line << endl;
+        else student_file << line;
+    }
+
+    student_file.close();
+    student_file_copy.close();
+}
+
 void recordingAddData(string login, int est, int n)
 {
     ifstream student_file("students_information/students.txt");
@@ -213,7 +230,7 @@ void recordingAddData(string login, int est, int n)
                     else
                     {
                         line.pop_back();
-                        student_file_copy << line << " " << to_string(est) << endl;
+                        student_file_copy << line << to_string(est) << endl;
                     }
                 }
             }
@@ -222,13 +239,17 @@ void recordingAddData(string login, int est, int n)
     
     student_file.close();
     student_file_copy.close();
+
+    copy_file();
 }
 
-void average_data_recording(string login, int est, int n)
+void avg_data_recording(string login, int est)
 {
     ifstream student_file("students_information/students.txt");
     ofstream student_file_copy("students_information/students_copy.txt");
     string line;
+    int n = 10, k = 0;
+    double avg = 0;
 
     for (int i = 1; i <= 374; i++)
     {
@@ -246,25 +267,23 @@ void average_data_recording(string login, int est, int n)
                 student_file_copy << line << endl;
                 for (int j = 0; j < n; j++)
                 {
-                    /* 
-                    вот тут мы должны сделать проверку на наличие оценки в файле и : 
-                    1)в какую - то интовую переменную записывать += оценка; 
-                    2)какой - то счётчик делать k++
-                    после чего необходимо поделить 2 этих числа и получить ср/знач, 
-                    а после записать это значение в строку Средний балл:
-                    ***
-                    при этом всём мы должны сделать getline() 9 раз (8 тем и 1 контрольная), 
-                    а после чего взять ещё раз line = getline() и записать line += " " + ito_s(srednee);
-                    ***
-                    */
-
                     i++;
                     getline(student_file, line);
-                    if (j + 1 != n) student_file_copy << line << endl;
+                    if (j + 1 != n)
+                    {
+                        if (line.back() != ' ')
+                        {
+                            k++;
+                            avg += int(line.back()) - 48;
+                        }
+                        student_file_copy << line << endl;
+                    }
                     else
                     {
-                        line.pop_back();
-                        student_file_copy << line << " " << to_string(est) << endl;
+                        line = line.substr(0, 14);
+                        avg = round (avg / k * 10) / 10;
+                        cout << avg;
+                        student_file_copy << line << to_string(avg).substr(0, 3) << endl;
                     }
                 }
             }
@@ -273,6 +292,8 @@ void average_data_recording(string login, int est, int n)
 
     student_file.close();
     student_file_copy.close();
+
+    copy_file();
 }
 
 void MODE_MAIN(string login)
@@ -308,6 +329,7 @@ void MODE_MAIN(string login)
             int num = print_and_input();
             int est = testing(num);
             recordingAddData(login, est, num);
+            avg_data_recording(login, est);
             break;
         }
         case 3:
