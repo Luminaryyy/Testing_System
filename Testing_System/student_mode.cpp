@@ -89,8 +89,8 @@ void training(int n)
     string line;
     getline(question_file, line);
     cout << endl;
-    int k = 1;
-    for (int i = 2; i <= 61; i++)
+    int k = 1, i = 2;
+    while (!question_file.eof())
     {
         getline(question_file, line);
         if ((i % 6 != 1) && (i % 6 != 2)) cout << line << endl;
@@ -114,6 +114,7 @@ void training(int n)
                 else cout << endl;
             }
         }
+        i++;
     }
     question_file.close();
     cout << "Вы прошли тренинг";
@@ -127,9 +128,8 @@ int testing(int n)
     vector<int> num_questions;
     getline(question_file, name_theme);
     cout << endl;
-    int k = 1;
-    int mistake = 0;
-    for (int i = 2; i <= 61; i++)
+    int k = 1, mistake = 0, i = 2;
+    while (!question_file.eof())
     {
         getline(question_file, line);
         if ((i % 6 != 1) && (i % 6 != 2)) cout << line << endl;
@@ -159,6 +159,7 @@ int testing(int n)
             }
             cout << endl;
         }
+        i++;
     }
     cout << "Вы прошли тест" << endl;
     
@@ -221,10 +222,10 @@ int control_testing()
                 quest1 = line + "\n";
                 final_test << quest1;
             }
-
             else
             {
-                quest2 = line + "\n";
+                if (!((n == 12) && (i == 7))) quest2 = line + "\n";
+                else quest2 = line;
                 extra << quest2;
             }
         }
@@ -236,11 +237,13 @@ int control_testing()
     extra.close();
     
     ifstream extra2("questions_list/extra.txt");
-    for (int i = 1; i <= 48; i++)
+    int i0 = 1;
+    while (!extra2.eof())
     {
         getline(extra2, line);
-        if (i != 48) final_test << line << endl;
+        if (!extra2.eof()) final_test << line << endl;
         else final_test << line;
+        i0++;
     }
     extra2.close();
     final_test.close();
@@ -248,13 +251,12 @@ int control_testing()
     ifstream final_test2("questions_list/final_test.txt");
     string question;
     cout << endl;
-    int k = 1;
-    int mistake = 0;
-    for (int i = 1; i <= 96; i++)
+    int k = 1, mistake = 0, i1 = 1;
+    while (!final_test2.eof())
     {
         getline(final_test2, line);
-        if ((i % 6 != 1) && (i % 6 != 0)) cout << line << endl;
-        else if (i % 6 == 1)
+        if ((i1 % 6 != 1) && (i1 % 6 != 0)) cout << line << endl;
+        else if (i1 % 6 == 1)
         {
             cout << k++ << "." << line << endl;
             question = line;
@@ -275,6 +277,7 @@ int control_testing()
             if (num != stoi(line)) mistake++;
             cout << endl;
         }
+        i1++;
     }
     final_test2.close();
 
@@ -295,12 +298,13 @@ void copy_file()
     string line;
     ofstream student_file("students_information/students.txt");
     ifstream student_file_copy("students_information/students_copy.txt");
-
-    for (int i = 1; i <= 374; i++)
+    int i = 1;
+    while (!student_file_copy.eof())
     {
         getline(student_file_copy, line);
-        if (i != 374) student_file << line << endl;
+        if (!student_file_copy.eof()) student_file << line << endl;
         else student_file << line;
+        i++;
     }
 
     student_file.close();
@@ -313,11 +317,12 @@ void recordingAddData(string login, int est, int n)
     ofstream student_file_copy("students_information/students_copy.txt");
     string line;
 
-    for (int i = 1; i <= 374; i++)
+    int i = 1;
+    while (!student_file.eof())
     {
         getline(student_file, line);
         
-        if (i != 374) student_file_copy << line << endl;
+        if (!student_file.eof()) student_file_copy << line << endl;
         else student_file_copy << line;
         if (i % 15 == 3)
         {
@@ -340,6 +345,7 @@ void recordingAddData(string login, int est, int n)
                 }
             }
         }
+        i++;
     }
     
     student_file.close();
@@ -356,11 +362,12 @@ void avg_data_recording(string login, int est)
     int n = 10, k = 0;
     double avg = 0;
 
-    for (int i = 1; i <= 374; i++)
+    int i = 1;
+    while (!student_file.eof())
     {
         getline(student_file, line);
 
-        if (i != 374) student_file_copy << line << endl;
+        if (!student_file.eof()) student_file_copy << line << endl;
         else student_file_copy << line;
         if (i % 15 == 3)
         {
@@ -376,7 +383,7 @@ void avg_data_recording(string login, int est)
                     getline(student_file, line);
                     if (j + 1 != n)
                     {
-                        if (line.back() != ' ')
+                        if (line.back() != '-')
                         {
                             k++;
                             avg += int(line.back()) - 48;
@@ -392,6 +399,7 @@ void avg_data_recording(string login, int est)
                 }
             }
         }
+        i++;
     }
 
     student_file.close();

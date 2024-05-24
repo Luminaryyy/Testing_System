@@ -41,7 +41,8 @@ int main()
 	{
 		string space = "-", line1 = "-", line2 = "-", name = "-", surname = "-";
 
-		for (int i = 1; i <= 374; i++)
+		int i = 1;
+		while (!student_file.eof())
 		{
 			if (i % 15 == 1)
 			{
@@ -66,6 +67,7 @@ int main()
 			else getline(student_file, space);
 
 			if ((line1 == login) && (line2 == password)) break;
+			i++;
 		}
 
 		if (!((line1 == login) && (line2 == password)))
