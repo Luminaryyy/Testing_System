@@ -213,7 +213,7 @@ void recordingAddData(string login, int est, int n)
                     else
                     {
                         line.pop_back();
-                        student_file_copy << line << to_string(est) << endl;
+                        student_file_copy << line << " " << to_string(est) << endl;
                     }
                 }
             }
@@ -221,6 +221,58 @@ void recordingAddData(string login, int est, int n)
     }
     
     student_file.close();
+    student_file_copy.close();
+}
+
+void average_data_recording(string login, int est, int n)
+{
+    ifstream student_file("students_information/students.txt");
+    ofstream student_file_copy("students_information/students_copy.txt");
+    string line;
+
+    for (int i = 1; i <= 374; i++)
+    {
+        getline(student_file, line);
+
+        if (i != 374) student_file_copy << line << endl;
+        else student_file_copy << line;
+        if (i % 15 == 3)
+        {
+            line.erase(0, 7);
+            if (login == line)
+            {
+                i++;
+                getline(student_file, line);
+                student_file_copy << line << endl;
+                for (int j = 0; j < n; j++)
+                {
+                    /* 
+                    вот тут мы должны сделать проверку на наличие оценки в файле и : 
+                    1)в какую - то интовую переменную записывать += оценка; 
+                    2)какой - то счётчик делать k++
+                    после чего необходимо поделить 2 этих числа и получить ср/знач, 
+                    а после записать это значение в строку Средний балл:
+                    ***
+                    при этом всём мы должны сделать getline() 9 раз (8 тем и 1 контрольная), 
+                    а после чего взять ещё раз line = getline() и записать line += " " + ito_s(srednee);
+                    ***
+                    */
+
+                    i++;
+                    getline(student_file, line);
+                    if (j + 1 != n) student_file_copy << line << endl;
+                    else
+                    {
+                        line.pop_back();
+                        student_file_copy << line << " " << to_string(est) << endl;
+                    }
+                }
+            }
+        }
+    }
+
+    student_file.close();
+    student_file_copy.close();
 }
 
 void MODE_MAIN(string login)
