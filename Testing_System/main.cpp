@@ -15,74 +15,80 @@ int main()
 {
 	setlocale(LC_ALL, "Russian");
 	system("chcp 1251 > NUL");
-	ifstream student_file("students_information/students.txt");
 
-	string login, password;
-
-	cout << "\t/-----------------------/" << endl;
-	cout << "\t|введите логин:\t\t|\n";
-	cout << "\t/-----------------------/" << endl;
-
-	cin >> login;
-
-	cout << "\t/-----------------------/" << endl;
-	cout << "\t|введите пароль:\t|\n";
-	cout << "\t/-----------------------/" << endl;
-
-	cin >> password;
-
-	if (checkadmin(login, password))
+	do
 	{
-		cout << "вы вошли на правах администратора";
-		//admin_mode();
-		return 0;
-	}
-	else
-	{
-		string space = "-", line1 = "-", line2 = "-", name = "-", surname = "-";
+		ifstream student_file("students_information/students.txt");
 
-		int i = 1;
-		while (!student_file.eof())
+		string login, password;
+
+		cout << "\t/-----------------------/" << endl;
+		cout << "\t|введите логин:\t\t|\n";
+		cout << "\t/-----------------------/" << endl;
+
+		cin >> login;
+
+		cout << "\t/-----------------------/" << endl;
+		cout << "\t|введите пароль:\t|\n";
+		cout << "\t/-----------------------/" << endl;
+
+		cin >> password;
+
+		if (checkadmin(login, password))
 		{
-			if (i % 15 == 1)
-			{
-				getline(student_file, name);
-				name.erase(0, 5);
-			}
-			else if (i % 15 == 2)
-			{
-				getline(student_file, surname);
-				surname.erase(0, 9);
-			}
-			else if (i % 15 == 3)
-			{
-				getline(student_file, line1);
-				line1.erase(0, 7);
-			}
-			else if (i % 15 == 4)
-			{
-				getline(student_file, line2);
-				line2.erase(0, 8);
-			}
-			else getline(student_file, space);
-
-			if ((line1 == login) && (line2 == password)) break;
-			i++;
-		}
-
-		if (!((line1 == login) && (line2 == password)))
-		{
-			cout << "Допуск запрещён";
+			cout << "вы вошли на правах администратора";
+			//admin_mode();
 			return 0;
 		}
-
 		else
 		{
-			cout << endl << "Добро пожаловать, " << surname << " " << name << "!" << endl;
-			MODE_MAIN(login);
-		}
-	}
+			string space = "-", line1 = "-", line2 = "-", name = "-", surname = "-";
 
-	student_file.close();
+			int i = 1;
+			while (!student_file.eof())
+			{
+				if (i % 15 == 1)
+				{
+					getline(student_file, name);
+					name.erase(0, 5);
+				}
+				else if (i % 15 == 2)
+				{
+					getline(student_file, surname);
+					surname.erase(0, 9);
+				}
+				else if (i % 15 == 3)
+				{
+					getline(student_file, line1);
+					line1.erase(0, 7);
+				}
+				else if (i % 15 == 4)
+				{
+					getline(student_file, line2);
+					line2.erase(0, 8);
+				}
+				else getline(student_file, space);
+
+				if ((line1 == login) && (line2 == password)) break;
+				i++;
+			}
+
+			if (!((line1 == login) && (line2 == password)))
+			{
+				cout << "Допуск запрещён";
+				return 0;
+			}
+
+			else
+			{
+				cout << endl << "Добро пожаловать, " << surname << " " << name << "!" << endl;
+				MODE_MAIN(login);
+			}
+		} 
+
+		student_file.close();
+		
+	} while (true);
+
 	return 0;
 }

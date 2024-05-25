@@ -414,7 +414,7 @@ void MODE_MAIN(string login)
         cout << "1 - Тренинг по теме" << endl;
         cout << "2 - Тестирование по теме" << endl;
         cout << "3 - Итоговый тест" << endl;
-        cout << "0 - Для выхода" << endl;
+        cout << "0 - Для выхода из режима студента" << endl;
 
         string str;
         do
@@ -429,7 +429,7 @@ void MODE_MAIN(string login)
         switch (n)
         {
             case 0:
-                cout << "Вы вышли из режима студента";
+                cout << endl << "Вы вышли из режима студента" << endl;
                 break;
             case 1:
             {
@@ -456,7 +456,7 @@ void MODE_MAIN(string login)
                     avg_data_recording(login, est);
                     break;
                 }
-                else cout << "Вы ещё не сдали все тесты";
+                else cout << endl << "Вы ещё не сдали все тесты";
         }
         cout << endl;
     } while (n != 0);
