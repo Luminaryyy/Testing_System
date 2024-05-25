@@ -25,7 +25,7 @@ void encryption(const string& inputFileName, const string& outputFileName, int s
 	cout << "Файл успешно зашифрован" << endl;
 }
 
-void output(const string& fileName)
+void output_cryption(const string& fileName)
 {
 	ifstream inputFile(fileName);
 
@@ -60,7 +60,7 @@ void decryptionOutput(const string& fileName, int step)
 	inputFile.close();
 }
 
-void recordingAddData(const string& fileName)
+void recordingAddDataCryptyon(const string& fileName)
 {
 	ofstream outputFile(fileName, ios::app);
 

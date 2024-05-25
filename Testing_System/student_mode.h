@@ -1,3 +1,4 @@
+#pragma once
 #include "Libraries.h"
 
 int print_and_input();

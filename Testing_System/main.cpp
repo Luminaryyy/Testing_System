@@ -18,8 +18,6 @@ int main()
 
 	do
 	{
-		ifstream student_file("students_information/students.txt");
-
 		string login, password;
 
 		cout << "\t/-----------------------/" << endl;
@@ -36,12 +34,13 @@ int main()
 
 		if (checkadmin(login, password))
 		{
-			cout << "вы вошли на правах администратора";
-			//admin_mode();
-			return 0;
+			cout << "Вы вошли на правах администратора" << endl;
+			ADMIN_MODE();
 		}
 		else
 		{
+			ifstream student_file("students_information/students.txt");
+
 			string space = "-", line1 = "-", line2 = "-", name = "-", surname = "-";
 
 			int i = 1;
@@ -84,10 +83,9 @@ int main()
 				cout << endl << "Добро пожаловать, " << surname << " " << name << "!" << endl;
 				MODE_MAIN(login);
 			}
-		} 
 
-		student_file.close();
-		
+			student_file.close();
+		} 
 	} while (true);
 
 	return 0;
