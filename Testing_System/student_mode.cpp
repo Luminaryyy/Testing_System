@@ -180,73 +180,70 @@ int testing(int n)
     else return 2;
 }
 
+bool check(string login)
+{
+    ifstream student_file("students_information/students.txt");
+    string line;
+    int i = 1;
+    while (!student_file.eof())
+    {
+        getline(student_file, line);
+
+        if (i % 15 == 3)
+        {
+            line.erase(0, 7);
+            if (login == line)
+            {
+                i++;
+                getline(student_file, line);
+                for (int j = 0; j < 8; j++)
+                {
+                    i++;
+                    getline(student_file, line);
+                    if ((line.back() == '-') || (line.back() == '2')) return false;
+                }
+                return true;
+            }
+        }
+        i++;
+    }
+    student_file.close();
+}
+
 int control_testing()
 {
     srand(time(NULL));
 
-    ofstream final_test("questions_list/final_test.txt");
-    ofstream extra("questions_list/extra.txt");
+    ofstream final_test1("questions_list/final_test.txt");
     ifstream file_question;
-    string line, quest1, quest2;
-
-    int* a = new int[8];
-    int size_a = 0, x;
+    string line;
+    int table[8][10] = {};
+    int num_theme, num_line_quest, num_last_theme = -1;
     bool generate = true;
     
-    for (int i = 0; i < 8; i++)
+    for (int i = 0; i < 20; i++)
     {
         while (generate)
         {
-            x = 1 + rand() % 8;
-            generate = false;
-            for (int j = 0; j < size_a; j++)
-            {
-                if (x == a[j])
-                {
-                    generate = true;
-                    break;
-                }
-            }
+            num_theme = rand() % 8;
+            num_line_quest = rand() % 10;
+            if ((table[num_theme][num_line_quest] == 0) && (num_theme != num_last_theme)) break;
         }
-        a[size_a++] = x;
-        generate = true;
+        num_last_theme = num_theme;
+        table[num_theme][num_line_quest] = 1;
 
-        file_question = return_file(x);
-        int num_line_quest = 2 + 6 * (rand() % 8);
-        for (int n = 1; n < num_line_quest; n++) getline(file_question, line);
-        for (int n = 1; n <= 12; n++)
+        file_question = return_file(num_theme + 1);
+        for (int n = 1; n < 2 + num_line_quest * 6; n++) getline(file_question, line);
+        for (int n = 1; n <= 6; n++)
         {
             getline(file_question, line);
-            if (n <= 6)
-            {
-                quest1 = line + "\n";
-                final_test << quest1;
-            }
-            else
-            {
-                if (!((n == 12) && (i == 7))) quest2 = line + "\n";
-                else quest2 = line;
-                extra << quest2;
-            }
-        }
-        
+            if (!((i == 19) && (n == 6))) final_test1 << line + "\n";
+            else final_test1 << line;
+        }   
     }
-    delete[] a;
 
+    final_test1.close();
     file_question.close();
-    extra.close();
-    
-    ifstream extra2("questions_list/extra.txt");
-    int i0 = 1;
-    while (!extra2.eof())
-    {
-        getline(extra2, line);
-        if (!extra2.eof()) final_test << line << endl;
-        else final_test << line;
-        i0++;
-    }
-    extra2.close();
-    final_test.close();
 
     ifstream final_test2("questions_list/final_test.txt");
     string question;
@@ -286,10 +283,10 @@ int control_testing()
     if (mistake != 0) cout << "Количество ошибок: " << mistake << endl;
     else cout << "Вы не допустили ни одной ошибки" << endl;
 
-    int val = 16 - mistake;
-    if (val >= 14 && val <= 16) return 5;
-    if (val >= 11 && val <= 13) return 4;
-    if (val >= 8 && val <= 10) return 3;
+    int val = 20 - mistake;
+    if (val >= 18 && val <= 20) return 5;
+    if (val >= 14 && val <= 17) return 4;
+    if (val >= 10 && val <= 13) return 3;
     else return 2;
 }
 
@@ -444,17 +441,22 @@ void MODE_MAIN(string login)
             {
                 int num = print_and_input();
                 int est = testing(num);
-                cout << "Ваша оценка: " << est;
+                if (est == 2) cout << "Ваша оценка: 2, вы не сдали тест";
+                else cout << "Ваша оценка: " << est;
                 recordingAddData(login, est, num);
                 avg_data_recording(login, est);
                 break;
             }
             case 3:
-                int est = control_testing();
-                cout << "Ваша оценка: " << est;
-                recordingAddData(login, est, 9);
-                avg_data_recording(login, est);
-                break;  
+                if (check(login))
+                {
+                    int est = control_testing();
+                    cout << "Ваша оценка: " << est;
+                    recordingAddData(login, est, 9);
+                    avg_data_recording(login, est);
+                    break;
+                }
+                else cout << "Вы ещё не сдали все тесты";
         }
         cout << endl;
     } while (n != 0);
