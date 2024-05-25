@@ -1,4 +1,5 @@
 #include "teacher_mode.h"
+#include "file_management_module.h"
 
 int PushStudents(struct Students* stud, const string& fileName, int size)
 {
@@ -3562,20 +3563,6 @@ void writeQuestions(struct question* quest, const string& fileName, int& size, s
 	}
 }
 
-void output_cryption_ADMIN(const string& fileName)
-{
-	ifstream inputFile(fileName);
-
-	string line;
-
-	while (getline(inputFile, line))
-	{
-		cout << line << endl;
-	}
-
-	inputFile.close();
-}
-
 void addQuestions(struct question* quest, const string& fileName, int& size, string &tema)
 {
 
@@ -3595,7 +3582,6 @@ void addQuestions(struct question* quest, const string& fileName, int& size, str
 	cout << "Введите третий вариант ответа: "; getline(cin, ans31);
 	cout << "Введите четвёртый вариант ответа: "; getline(cin, ans41);
 	cout << "Введите номер правильного варианта ответа: "; getline(cin, true_ans1);
-	///////////вернуться
 
 	size++;
 
@@ -3767,12 +3753,14 @@ void ADMIN_MODE()
 	int fl1, fl2, fl3, fl4;
 	do
 	{
-		cout << "Выберите действие" << endl << "0.Выйти из режима преподавателя" << endl << "1.Редактирование вопросов" << endl << "2.Работа со списком студентов" << endl;
+		cout << "Выберите действие" << endl << "0.Выйти из режима преподавателя" << endl << "1.Редактирование вопросов" << endl \
+			<< "2.Работа со списком студентов" << endl << "3.Шифрация файла" << endl << "4.Открытие зашифрованного файла" <<\
+			endl << "5.Получение данных из файла" << endl;
 		while (true)
 		{
 			cin >> fl1;
 
-			if (cin.fail() || fl1 < 0 || fl1 > 5)
+			if (cin.fail() || fl1 < 0 || fl1 > 6)
 			{
 				cin.clear();
 				cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -4086,6 +4074,181 @@ void ADMIN_MODE()
 				default: cout << "Некоррентый ввод!" << endl;
 				}
 			} while (fl3 != 0);
+			break;
+		}
+		case 3:
+		{
+			cout << "Вы выбрали шифрацию исходного файла" << endl;
+
+			int o1 = -1;
+
+			do
+			{
+				cout << "Выберите файл, который хотите зашифровать:" << endl << "0 - закрыть меню выбора файла" << endl << "1 - файл с тестовой базой"\
+					<< endl << "2 - файл с базой студентов" << endl;
+
+				while (true)
+				{
+					cin >> o1;
+
+					if (cin.fail())
+					{
+						cin.clear();
+						cin.ignore(numeric_limits<streamsize>::max(), '\n');
+						cout << "Вы ввели некорректное значение. Пожалуйста, повторите попытку" << endl;
+					}
+					else
+					{
+						cin.ignore(numeric_limits<streamsize>::max(), '\n');
+						break;
+					}
+				}
+
+				switch (o1)
+				{
+				case 0:
+					cout << "Вы вышли из меню выбора файла" << endl;
+					break;
+
+				case 1:
+					cout << "Вы выбрали для шифрации файл с тестовой базой" << endl;
+					encryption("questions_list/questionsforencryptions.txt", "encryption_questions_list/encryptionQuestions.txt", 5);
+					break;
+
+				case 2:
+					cout << "Вы выбрали для шифрации файл с базой студентов" << endl;
+					encryption("students_information/students.txt", "students_information/encryptionStudents.txt", 5);
+					break;
+
+				default:
+					cout << "Вы ввели некорректный номер файла. Пожалуйста, повторите попытку" << endl;
+					break;
+				}
+			} while (o1 != 0);
+
+			break;
+		}
+		case 4:
+		{
+			cout << "Вы выбрали вывод зашифрованной информации" << endl;
+
+			int o1 = -1;
+
+			do
+			{
+				cout << "Выберите файл, который хотите вывести:" << endl << "0 - закрыть меню выбора файла" << endl << "1 - файл с тестовой базой"\
+					<< endl << "2 - файл с базой студентов" << endl;
+
+				while (true)
+				{
+					cin >> o1;
+
+					if (cin.fail())
+					{
+						cin.clear();
+						cin.ignore(numeric_limits<streamsize>::max(), '\n');
+						cout << "Вы ввели некорректное значение. Пожалуйста, повторите попытку" << endl;
+					}
+					else
+					{
+						cin.ignore(numeric_limits<streamsize>::max(), '\n');
+						break;
+					}
+				}
+
+				switch (o1)
+				{
+				case 0:
+					cout << "Вы вышли из меню выбора файла" << endl;
+					break;
+
+				case 1:
+					cout << "Вы выбрали для вывода файл с тестовой базой" << endl;
+					output_cryption_ADMIN("encryption_questions_list/encryptionQuestions.txt");
+					break;
+
+				case 2:
+					cout << "Вы выбрали для вывода файл с базой студентов" << endl;
+					output_cryption_ADMIN("students_information/encryptionStudents.txt");
+					break;
+
+				default:
+					cout << "Вы ввели некорректный номер файла. Пожалуйста, повторите попытку" << endl;
+					break;
+				}
+			} while (o1 != 0);
+
+			break;
+		}
+
+		case 5:
+		{
+			cout << "Вы выбрали получение данных из файла и их вывод" << endl;
+
+			int o1 = -1;
+
+			do
+			{
+				cout << "Выберите файл, который хотите вывести:" << endl << "0 - закрыть меню выбора файла" << endl << \
+					"1 - исходный файл с тестовой базой" << endl << "2 - исходный файл с базой студентов" << endl << \
+					"3 - зашифрованный файл с тестовой базой" << endl << "4 - зашифрованный файл с базой студентов" << endl;
+
+				while (true)
+				{
+					cin >> o1;
+
+					if (cin.fail())
+					{
+						cin.clear();
+						cin.ignore(numeric_limits<streamsize>::max(), '\n');
+						cout << "Вы ввели некорректное значение. Пожалуйста, повторите попытку" << endl;
+					}
+					else
+					{
+						cin.ignore(numeric_limits<streamsize>::max(), '\n');
+						break;
+					}
+				}
+
+				switch (o1)
+				{
+				case 0:
+					cout << "Вы вышли из меню выбора файла" << endl;
+					break;
+
+				case 1:
+					cout << "Вы выбрали для получения данных из файла и их вывода исходный файл с тестовой базой" << endl;
+					output_cryption_ADMIN("questions_list/file.txt");
+					output_cryption_ADMIN("questions_list/loops.txt");
+					output_cryption_ADMIN("questions_list/matrix.txt");
+					output_cryption_ADMIN("questions_list/pointer.txt");
+					output_cryption_ADMIN("questions_list/recursion.txt");
+					output_cryption_ADMIN("questions_list/string.txt");
+					output_cryption_ADMIN("questions_list/struct.txt");
+					output_cryption_ADMIN("questions_list/dinamic_RAM.txt");
+					break;
+
+				case 2:
+					cout << "Вы выбрали для получения данных из файла и их вывода исходный файл с базой студентов" << endl;
+					output_cryption_ADMIN("students_information/students.txt");
+					break;
+
+				case 3:
+					cout << "Вы выбрали для получения данных из файла и их вывода зашифрованный файл с тестовой базой" << endl;
+					decryptionOutput("encryption_questions_list/encryptionQuestions.txt", 5);
+					break;
+
+				case 4:
+					cout << "Вы выбрали для получения данных из файла и их вывода зашифрованный файл с базой студентов" << endl;
+					decryptionOutput("students_information/encryptionStudents.txt", 5);
+					break;
+
+				default:
+					cout << "Вы ввели некорректный номер файла. Пожалуйста, повторите попытку" << endl;
+					break;
+				}
+			} while (o1 != 0);
+
 			break;
 		}
 		default: cout << "Некоррентый ввод!" << endl;

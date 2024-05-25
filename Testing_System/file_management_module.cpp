@@ -25,7 +25,7 @@ void encryption(const string& inputFileName, const string& outputFileName, int s
 	cout << "Файл успешно зашифрован" << endl;
 }
 
-void output_cryption(const string& fileName)
+void output_cryption_ADMIN(const string& fileName)
 {
 	ifstream inputFile(fileName);
 
