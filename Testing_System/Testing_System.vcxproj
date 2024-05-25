@@ -127,7 +127,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="file_management_module.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="student_mode.cpp" />
+    <ClCompile Include="teacher_mode.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="file_management_module.h" />
+    <ClInclude Include="Libraries.h" />
+    <ClInclude Include="student_mode.h" />
+    <ClInclude Include="teacher_mode.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
