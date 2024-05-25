@@ -3511,13 +3511,14 @@ void sort(struct Students* stud, const string& filename, int& size2)
 	} while (o != 0);
 }
 
-int PushQuestions(struct question* quest, const string& fileName, int size)
+int PushQuestions(struct question* quest, const string& fileName, int size, string &tema)
 {
 	ifstream inputFile(fileName);
 
 	int k = 0;
-	string line;
-	getline(inputFile, line);
+
+	getline(inputFile, tema);
+	
 	for (int i = 0; i < size; i++)
 	{
 		getline(inputFile, quest[i].text);
@@ -3539,9 +3540,10 @@ int PushQuestions(struct question* quest, const string& fileName, int size)
 	return k;
 }
 
-void writeQuestions(struct question* quest, const string& fileName, int& size)
+void writeQuestions(struct question* quest, const string& fileName, int& size, string &tema)
 {
 	ofstream outputFile(fileName, ofstream::out | ofstream::trunc);
+	outputFile << tema << endl;
 	for (int i = 0; i < size; i++)
 	{
 		outputFile << quest[i].text << endl;
@@ -3549,7 +3551,14 @@ void writeQuestions(struct question* quest, const string& fileName, int& size)
 		outputFile << quest[i].ans2 << endl;
 		outputFile << quest[i].ans3 << endl;
 		outputFile << quest[i].ans4 << endl;
-		outputFile << quest[i].true_ans << endl;
+		if (i < size - 1) 
+		{
+			outputFile << quest[i].true_ans << endl;
+		}
+		else 
+		{
+			outputFile << quest[i].true_ans;
+		}
 	}
 }
 
@@ -3567,11 +3576,11 @@ void output_cryption_ADMIN(const string& fileName)
 	inputFile.close();
 }
 
-void addQuestions(struct question* quest, const string& fileName, int& size)
+void addQuestions(struct question* quest, const string& fileName, int& size, string &tema)
 {
 
-	PushQuestions(quest, fileName, size);
-	writeQuestions(quest, fileName, size);
+	PushQuestions(quest, fileName, size, tema);
+	writeQuestions(quest, fileName, size, tema);
 
 	string question1;
 	string ans11;
@@ -3580,12 +3589,13 @@ void addQuestions(struct question* quest, const string& fileName, int& size)
 	string ans41;
 	string true_ans1;
 
-	cout << "Введите текст вопроса: "; cin >> question1;
-	cout << "Введите первый вариант ответа: "; cin >> ans11;
-	cout << "Введите второй вариант ответа: "; cin >> ans21;
-	cout << "Введите третий вариант ответа: "; cin >> ans31;
-	cout << "Введите четвёртый вариант ответа: "; cin >> ans41;
-	cout << "Введите номер правильного варианта ответа: "; cin >> true_ans1;
+	cout << "Введите текст вопроса: "; getline(cin, question1);
+	cout << "Введите первый вариант ответа: "; getline(cin, ans11);
+	cout << "Введите второй вариант ответа: "; getline(cin, ans21);
+	cout << "Введите третий вариант ответа: "; getline(cin, ans31);
+	cout << "Введите четвёртый вариант ответа: "; getline(cin, ans41);
+	cout << "Введите номер правильного варианта ответа: "; getline(cin, true_ans1);
+	///////////вернуться
 
 	size++;
 
@@ -3598,6 +3608,8 @@ void addQuestions(struct question* quest, const string& fileName, int& size)
 
 	ofstream outputFile(fileName, ofstream::out | ofstream::app);
 
+	outputFile << endl;
+
 	outputFile << quest[size - 1].text;
 	outputFile << quest[size - 1].ans1;
 	outputFile << quest[size - 1].ans2;
@@ -3606,9 +3618,9 @@ void addQuestions(struct question* quest, const string& fileName, int& size)
 	outputFile << quest[size - 1].true_ans;
 }
 
-void delQuestions(struct question* quest, const string& fileName, int& size)
+void delQuestions(struct question* quest, const string& fileName, int& size, string &tema)
 {
-	PushQuestions(quest, fileName, size);
+	PushQuestions(quest, fileName, size, tema);
 
 	string line1;
 
@@ -3637,12 +3649,12 @@ void delQuestions(struct question* quest, const string& fileName, int& size)
 		}
 	}
 
-	writeQuestions(quest, fileName, size);
+	writeQuestions(quest, fileName, size, tema);
 }
 
-void editQuestions(struct question* quest, const string& fileName, int& size)
+void editQuestions(struct question* quest, const string& fileName, int& size, string &tema)
 {
-	PushQuestions(quest, fileName, size);
+	PushQuestions(quest, fileName, size, tema);
 	int tr;
 	string line1;
 
@@ -3651,7 +3663,6 @@ void editQuestions(struct question* quest, const string& fileName, int& size)
 	while (flag)
 	{
 		cout << "Введите вопрос, который желаете изменить: ";
-		cin.ignore();
 		getline(cin, line1);
 
 		for (int i = 0; i < size; i++)
@@ -3673,37 +3684,47 @@ void editQuestions(struct question* quest, const string& fileName, int& size)
 					case 6:
 					{
 						cout << "Введите новое значение для поля" << endl;
-						cin >> quest[i].text;
+						cin.ignore();
+						getline(cin, quest[i].text);
 						break;
 					}
 					case 1:
 					{
 						cout << "Введите новое значение для поля" << endl;
-						cin >> quest[i].ans1;
+						cin.ignore();
+						getline(cin, quest[i].ans1);
+						quest[i].ans1 = "1)" + quest[i].ans1;
 						break;
 					}
 					case 2:
 					{
 						cout << "Введите новое значение для поля" << endl;
-						cin >> quest[i].ans2;
+						cin.ignore();
+						getline(cin, quest[i].ans2);
+						quest[i].ans2 = "2)" + quest[i].ans2;
 						break;
 					}
 					case 3:
 					{
 						cout << "Введите новое значение для поля" << endl;
-						cin >> quest[i].ans3;
+						cin.ignore();
+						getline(cin, quest[i].ans3);
+						quest[i].ans3 = "3)" + quest[i].ans3;
 						break;
 					}
 					case 4:
 					{
 						cout << "Введите новое значение для поля" << endl;
-						cin >> quest[i].ans4;
+						cin.ignore();
+						getline(cin, quest[i].ans4);
+						quest[i].ans4 = "4)" + quest[i].ans4;
 						break;
 					}
 					case 5:
 					{
 						cout << "Введите новое значение для поля" << endl;
-						cin >> quest[i].true_ans;
+						cin.ignore();
+						getline(cin, quest[i].true_ans);
 						break;
 					}
 					default: cout << "Некорретный ввод!" << endl;
@@ -3721,7 +3742,7 @@ void editQuestions(struct question* quest, const string& fileName, int& size)
 		}
 	}
 
-	writeQuestions(quest, fileName, size);
+	writeQuestions(quest, fileName, size, tema);
 }
 
 void ADMIN_MODE()
@@ -3731,14 +3752,15 @@ void ADMIN_MODE()
 	const int size2 = 100;
 	struct Students stud[size2];
 	struct question quest[size2 * 10];
-	size11 = PushQuestions(quest, "questions_list/file.txt", size11);
-	size12 = PushQuestions(quest, "questions_list/loops.txt", size12);
-	size13 = PushQuestions(quest, "questions_list/matrix.txt", size13);
-	size14 = PushQuestions(quest, "questions_list/pointer.txt", size14);
-	size15 = PushQuestions(quest, "questions_list/recursion.txt", size15);
-	size16 = PushQuestions(quest, "questions_list/string.txt", size16);
-	size17 = PushQuestions(quest, "questions_list/struct.txt", size17);
-	size18 = PushQuestions(quest, "questions_list/dinamic_RAM.txt", size18) - 1;
+	string tema;
+	size11 = PushQuestions(quest, "questions_list/file.txt", size11, tema);
+	size12 = PushQuestions(quest, "questions_list/loops.txt", size12, tema);
+	size13 = PushQuestions(quest, "questions_list/matrix.txt", size13, tema);
+	size14 = PushQuestions(quest, "questions_list/pointer.txt", size14, tema);
+	size15 = PushQuestions(quest, "questions_list/recursion.txt", size15, tema);
+	size16 = PushQuestions(quest, "questions_list/string.txt", size16, tema);
+	size17 = PushQuestions(quest, "questions_list/struct.txt", size17, tema);
+	size18 = PushQuestions(quest, "questions_list/dinamic_RAM.txt", size18, tema) - 1;
 
 	int size = PushStudents(stud, "students_information/students.txt", size1);
 
@@ -3820,42 +3842,42 @@ void ADMIN_MODE()
 						case 0: break;
 						case 1:
 						{
-							delQuestions(quest, "questions_list/file.txt", size11);
+							delQuestions(quest, "questions_list/file.txt", size11, tema);
 							break;
 						}
 						case 2:
 						{
-							delQuestions(quest, "questions_list/loops.txt", size12);
+							delQuestions(quest, "questions_list/loops.txt", size12, tema);
 							break;
 						}
 						case 3:
 						{
-							delQuestions(quest, "questions_list/matrix.txt", size13);
+							delQuestions(quest, "questions_list/matrix.txt", size13, tema);
 							break;
 						}
 						case 4:
 						{
-							delQuestions(quest, "questions_list/pointer.txt", size14);
+							delQuestions(quest, "questions_list/pointer.txt", size14, tema);
 							break;
 						}
 						case 5:
 						{
-							delQuestions(quest, "questions_list/recursion.txt", size15);
+							delQuestions(quest, "questions_list/recursion.txt", size15, tema);
 							break;
 						}
 						case 6:
 						{
-							delQuestions(quest, "questions_list/string.txt", size16);
+							delQuestions(quest, "questions_list/string.txt", size16, tema);
 							break;
 						}
 						case 7:
 						{
-							delQuestions(quest, "questions_list/struct.txt", size17);
+							delQuestions(quest, "questions_list/struct.txt", size17, tema);
 							break;
 						}
 						case 8:
 						{
-							delQuestions(quest, "questions_list/dinamic_RAM.txt", size18);
+							delQuestions(quest, "questions_list/dinamic_RAM.txt", size18, tema);
 							break;
 						}
 						default: cout << "Некорректный ввод!" << endl;
@@ -3889,42 +3911,42 @@ void ADMIN_MODE()
 						case 0: break;
 						case 1:
 						{
-							addQuestions(quest, "questions_list/file.txt", size11);
+							addQuestions(quest, "questions_list/file.txt", size11, tema);
 							break;
 						}
 						case 2:
 						{
-							addQuestions(quest, "questions_list/loops.txt", size12);
+							addQuestions(quest, "questions_list/loops.txt", size12, tema);
 							break;
 						}
 						case 3:
 						{
-							addQuestions(quest, "questions_list/matrix.txt", size13);
+							addQuestions(quest, "questions_list/matrix.txt", size13, tema);
 							break;
 						}
 						case 4:
 						{
-							addQuestions(quest, "questions_list/pointer.txt", size14);
+							addQuestions(quest, "questions_list/pointer.txt", size14, tema);
 							break;
 						}
 						case 5:
 						{
-							addQuestions(quest, "questions_list/recursion.txt", size15);
+							addQuestions(quest, "questions_list/recursion.txt", size15, tema);
 							break;
 						}
 						case 6:
 						{
-							addQuestions(quest, "questions_list/string.txt", size16);
+							addQuestions(quest, "questions_list/string.txt", size16, tema);
 							break;
 						}
 						case 7:
 						{
-							addQuestions(quest, "questions_list/struct.txt", size17);
+							addQuestions(quest, "questions_list/struct.txt", size17, tema);
 							break;
 						}
 						case 8:
 						{
-							addQuestions(quest, "questions_list/dinamic_RAM.txt", size18);
+							addQuestions(quest, "questions_list/dinamic_RAM.txt", size18, tema);
 							break;
 						}
 						default: cout << "Некорректный ввод!" << endl;
@@ -3958,42 +3980,42 @@ void ADMIN_MODE()
 						case 0: break;
 						case 1:
 						{
-							editQuestions(quest, "questions_list/file.txt", size11);
+							editQuestions(quest, "questions_list/file.txt", size11, tema);
 							break;
 						}
 						case 2:
 						{
-							editQuestions(quest, "questions_list/loops.txt", size12);
+							editQuestions(quest, "questions_list/loops.txt", size12, tema);
 							break;
 						}
 						case 3:
 						{
-							editQuestions(quest, "questions_list/matrix.txt", size13);
+							editQuestions(quest, "questions_list/matrix.txt", size13, tema);
 							break;
 						}
 						case 4:
 						{
-							editQuestions(quest, "questions_list/pointer.txt", size14);
+							editQuestions(quest, "questions_list/pointer.txt", size14, tema);
 							break;
 						}
 						case 5:
 						{
-							editQuestions(quest, "questions_list/recursion.txt", size15);
+							editQuestions(quest, "questions_list/recursion.txt", size15, tema);
 							break;
 						}
 						case 6:
 						{
-							editQuestions(quest, "questions_list/string.txt", size16);
+							editQuestions(quest, "questions_list/string.txt", size16, tema);
 							break;
 						}
 						case 7:
 						{
-							editQuestions(quest, "questions_list/struct.txt", size17);
+							editQuestions(quest, "questions_list/struct.txt", size17, tema);
 							break;
 						}
 						case 8:
 						{
-							editQuestions(quest, "questions_list/dinamic_RAM.txt", size18);
+							editQuestions(quest, "questions_list/dinamic_RAM.txt", size18, tema);
 							break;
 						}
 						default: cout << "Некорректный ввод!" << endl;
